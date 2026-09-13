@@ -1,20 +1,39 @@
 import { createClient } from "@/lib/supabase/server"
 
-// Tool de ejemplo: crea un item en core_items del usuario autenticado.
-// El alumno solo escribe execute(); el registry hace el resto.
+// Crea un artículo del catálogo (tabla core_items) del usuario autenticado.
 export const crearItem = {
   name: "crear_item",
-  description: "Crea un nuevo item en la lista del usuario autenticado.",
+  description:
+    "Crea un artículo en el catálogo de productos para el hogar (Producto, Ofertas o Lo más vendido).",
   parameters: {
     type: "object",
     properties: {
-      title: { type: "string", description: "Título del item." },
-      description: { type: "string", description: "Descripción opcional." },
+      sku: { type: "number", description: "SKU numérico del artículo." },
+      descripcion: {
+        type: "string",
+        description: "Descripción del artículo.",
+      },
+      precio: { type: "number", description: "Precio en MXN." },
+      tipo: {
+        type: "string",
+        description: "Tipo: producto, ofertas o lo_mas_vendido.",
+      },
+      disponibilidad: {
+        type: "string",
+        description:
+          "Disponibilidad: entrega_inmediata, bajo_pedido o no_disponible.",
+      },
     },
-    required: ["title"],
+    required: ["sku", "descripcion", "precio"],
     additionalProperties: false,
   },
-  async execute({ title, description = null }) {
+  async execute({
+    sku,
+    descripcion,
+    precio,
+    tipo = "producto",
+    disponibilidad = "entrega_inmediata",
+  }) {
     const supabase = await createClient()
     const {
       data: { user },
@@ -23,10 +42,18 @@ export const crearItem = {
 
     const { data, error } = await supabase
       .from("core_items")
-      .insert({ user_id: user.id, title, description })
+      .insert({
+        user_id: user.id,
+        title: String(sku),
+        sku,
+        description: descripcion,
+        precio,
+        categoria: tipo,
+        status: disponibilidad,
+      })
       .select()
       .single()
     if (error) throw new Error(error.message)
-    return { ok: true, item: data }
+    return { ok: true, producto: data }
   },
 }

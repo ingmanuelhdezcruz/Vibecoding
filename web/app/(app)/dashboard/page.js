@@ -1,12 +1,34 @@
-import { Check, RotateCcw, Trash2 } from "lucide-react"
+import { Pencil, Trash2 } from "lucide-react"
+import config from "@/config"
 import { createClient } from "@/lib/supabase/server"
-import { createItem, toggleItem, deleteItem } from "./actions"
+import { createItem, updateItem, deleteItem } from "./actions"
+import ProductoForm from "./ProductoForm"
 
-export const metadata = { title: "Dashboard" }
+export const metadata = { title: "Productos para el hogar" }
+
+function etiqueta(opciones, valor) {
+  return opciones.find((o) => o.value === valor)?.label ?? valor
+}
+
+function formatearPrecio(precio) {
+  if (precio == null || precio === "") return "—"
+  return new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "MXN",
+  }).format(Number(precio))
+}
+
+function badgeDisponibilidad(status) {
+  if (status === "entrega_inmediata") return "badge-success"
+  if (status === "no_disponible") return "badge-error"
+  if (status === "bajo_pedido") return "badge-warning"
+  return "badge-ghost"
+}
 
 export default async function DashboardPage() {
+  const copy = config.dashboard
   const supabase = await createClient()
-  const { data: items, error } = await supabase
+  const { data: productos, error } = await supabase
     .from("core_items")
     .select("*")
     .order("created_at", { ascending: false })
@@ -14,114 +36,102 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Tu dashboard</h1>
-        <p className="mt-1 text-sm text-base-content/70">
-          CRUD genérico sobre <code>core_items</code>. En Sem 2 lo renombras a
-          tu dominio (leads, recetas, proyectos…).
-        </p>
+        <h1 className="text-2xl font-bold tracking-tight">{copy.title}</h1>
+        <p className="mt-1 text-sm text-base-content/70">{copy.subtitle}</p>
       </div>
 
-      {/* Crear */}
-      <form
-        action={createItem}
-        className="rounded-box border border-base-200 bg-base-100 p-4"
-      >
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <input
-            name="title"
-            required
-            maxLength={120}
-            placeholder="Título del item"
-            aria-label="Título del item"
-            className="input input-bordered flex-1"
-          />
-          <input
-            name="description"
-            maxLength={280}
-            placeholder="Descripción (opcional)"
-            aria-label="Descripción del item"
-            className="input input-bordered flex-1"
-          />
-          <button type="submit" className="btn btn-primary">
-            Agregar
-          </button>
-        </div>
-      </form>
+      <section className="rounded-box border border-base-200 bg-base-100 p-4">
+        <h2 className="mb-3 text-sm font-semibold">{copy.createTitle}</h2>
+        <ProductoForm action={createItem} submitLabel={copy.submitCreate} />
+      </section>
 
       {error && (
         <div className="rounded-lg border border-error/40 bg-error/10 px-4 py-3 text-sm text-error">
-          No pudimos cargar tus items: {error.message}
+          {copy.loadError}: {error.message}
         </div>
       )}
 
-      {/* Lista */}
-      {!items?.length ? (
+      {!productos?.length ? (
         <div className="rounded-box border border-dashed border-base-300 bg-base-100 px-4 py-12 text-center text-base-content/60">
-          Aún no tienes items. Crea el primero arriba.
+          {copy.empty}
         </div>
       ) : (
-        <ul className="space-y-2">
-          {items.map((item) => (
-            <li
-              key={item.id}
-              className="flex items-center gap-3 rounded-box border border-base-200 bg-base-100 px-4 py-3"
-            >
-              <div className="min-w-0 flex-1">
-                <p
-                  className={
-                    item.status === "done"
-                      ? "truncate font-medium text-base-content/40 line-through"
-                      : "truncate font-medium"
-                  }
-                >
-                  {item.title}
-                </p>
-                {item.description && (
-                  <p className="truncate text-sm text-base-content/60">
-                    {item.description}
-                  </p>
-                )}
-              </div>
+        <div className="overflow-x-auto rounded-box border border-base-200 bg-base-100">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>{copy.fields.tipo.label}</th>
+                <th>{copy.fields.sku.label}</th>
+                <th>{copy.fields.descripcion.label}</th>
+                <th>{copy.fields.precio.label}</th>
+                <th>{copy.fields.disponibilidad.label}</th>
+                <th className="w-12" />
+              </tr>
+            </thead>
+            <tbody>
+              {productos.map((producto) => (
+                <tr key={producto.id} className="align-top">
+                  <td className="whitespace-nowrap">
+                    <span className="badge badge-sm badge-ghost">
+                      {etiqueta(copy.tipos, producto.categoria)}
+                    </span>
+                  </td>
+                  <td className="font-medium">
+                    {producto.sku ?? producto.title}
+                  </td>
+                  <td className="max-w-sm text-sm text-base-content/70">
+                    {producto.description || "—"}
+                  </td>
+                  <td className="whitespace-nowrap font-semibold">
+                    {formatearPrecio(producto.precio)}
+                  </td>
+                  <td>
+                    <span
+                      className={`badge badge-sm ${badgeDisponibilidad(producto.status)}`}
+                    >
+                      {etiqueta(copy.disponibilidades, producto.status)}
+                    </span>
+                  </td>
+                  <td>
+                    <form action={deleteItem}>
+                      <input type="hidden" name="id" value={producto.id} />
+                      <button
+                        type="submit"
+                        className="btn btn-ghost btn-sm btn-square text-error"
+                        title={copy.deleteLabel}
+                        aria-label={`${copy.deleteLabel}: ${producto.sku ?? producto.title}`}
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-              <span
-                className={`badge badge-sm ${
-                  item.status === "done" ? "badge-success" : "badge-ghost"
-                }`}
+          <div className="space-y-2 border-t border-base-200 p-4">
+            {productos.map((producto) => (
+              <details
+                key={`${producto.id}-edit`}
+                className="rounded-box border border-base-200 px-3 py-2"
               >
-                {item.status}
-              </span>
-
-              <form action={toggleItem}>
-                <input type="hidden" name="id" value={item.id} />
-                <input type="hidden" name="status" value={item.status} />
-                <button
-                  type="submit"
-                  className="btn btn-ghost btn-sm btn-square"
-                  title={item.status === "done" ? "Reabrir" : "Marcar como hecho"}
-                  aria-label={item.status === "done" ? "Reabrir item" : "Marcar como hecho"}
-                >
-                  {item.status === "done" ? (
-                    <RotateCcw className="size-4" />
-                  ) : (
-                    <Check className="size-4" />
-                  )}
-                </button>
-              </form>
-
-              <form action={deleteItem}>
-                <input type="hidden" name="id" value={item.id} />
-                <button
-                  type="submit"
-                  className="btn btn-ghost btn-sm btn-square text-error"
-                  title="Borrar"
-                  aria-label={`Borrar ${item.title}`}
-                >
-                  <Trash2 className="size-4" />
-                </button>
-              </form>
-            </li>
-          ))}
-        </ul>
+                <summary className="flex cursor-pointer items-center gap-2 text-sm font-medium text-base-content/70">
+                  <Pencil className="size-3.5" />
+                  {copy.editLabel} · {etiqueta(copy.tipos, producto.categoria)} ·
+                  SKU {producto.sku ?? producto.title}
+                </summary>
+                <div className="mt-3 border-t border-base-200 pt-3">
+                  <ProductoForm
+                    action={updateItem}
+                    producto={producto}
+                    submitLabel={copy.submitUpdate}
+                  />
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   )

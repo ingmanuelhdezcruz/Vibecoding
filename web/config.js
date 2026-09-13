@@ -61,6 +61,53 @@ const config = {
   },
 
   // -----------------------------------------------------------
+  // Feature core: catálogo de productos para el hogar (tabla core_items)
+  // -----------------------------------------------------------
+  dashboard: {
+    navLabel: "Productos para el hogar",
+    title: "Productos para el hogar",
+    subtitle:
+      "Administra Producto, Ofertas y Lo más vendido: SKU, descripción, precio y disponibilidad.",
+    createTitle: "Nuevo artículo",
+    submitCreate: "Agregar artículo",
+    submitUpdate: "Guardar cambios",
+    empty: "Aún no tienes artículos. Crea el primero arriba.",
+    loadError: "No pudimos cargar tu catálogo",
+    editLabel: "Editar artículo",
+    deleteLabel: "Borrar artículo",
+    fields: {
+      tipo: {
+        label: "Tipo",
+      },
+      sku: {
+        label: "SKU",
+        placeholder: "10234",
+      },
+      descripcion: {
+        label: "Descripción",
+        placeholder: "Qué incluye o para qué sirve",
+      },
+      precio: {
+        label: "Precio",
+        placeholder: "299",
+      },
+      disponibilidad: {
+        label: "Disponibilidad",
+      },
+    },
+    tipos: [
+      { value: "producto", label: "Producto" },
+      { value: "ofertas", label: "Ofertas" },
+      { value: "lo_mas_vendido", label: "Lo más vendido" },
+    ],
+    disponibilidades: [
+      { value: "entrega_inmediata", label: "Entrega inmediata" },
+      { value: "bajo_pedido", label: "Bajo pedido" },
+      { value: "no_disponible", label: "No disponible" },
+    ],
+  },
+
+  // -----------------------------------------------------------
   // PayPal.me (si features.paypal está activo)
   // -----------------------------------------------------------
   payment: {
