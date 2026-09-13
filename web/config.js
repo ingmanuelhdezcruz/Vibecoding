@@ -39,7 +39,7 @@ const config = {
     primary: "#00AEC7", // indigo-600: tech, IA y confianza profesional
     // Logo: puede ser texto o ruta a /public/logo.svg
     logoText: "Betterware Chihuahua",
-    logoSrc: "/logo.jpg",
+    logoSrc: "/logo.png",
     // Estilo del bordeado global (DaisyUI usa esto para botones, cards)
     radius: "1rem",
   },
