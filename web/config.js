@@ -22,10 +22,10 @@ const config = {
   // Identidad del producto
   // -----------------------------------------------------------
   app: {
-    name: "VibeCode",
+    name: "Betterware Chihuahua",
     description:
-      "Boilerplate para crear páginas y productos web con IA, pensado para estudiantes y profesionistas de Chihuahua que quieren estar al día con la tecnología.",
-    domain: "vibecode.mx", // sin https://, sin www
+      "Mi casa con Betterware",
+    domain: "betterware.chih.mx", // sin https://, sin www
     locale: "es", // "es" | "en"
     // URL pública: usa NEXT_PUBLIC_APP_URL en .env. En este config solo definimos el default.
     defaultUrl: "http://localhost:3000",
@@ -36,9 +36,9 @@ const config = {
   // -----------------------------------------------------------
   brand: {
     // Color primario en HEX. DaisyUI lo aplica como --color-primary via theme.
-    primary: "#4F46E5", // indigo-600: tech, IA y confianza profesional
+    primary: "#00AEC7", // indigo-600: tech, IA y confianza profesional
     // Logo: puede ser texto o ruta a /public/logo.svg
-    logoText: "Vibecoding",
+    logoText: "Betterware Chihuahua",
     logoSrc: null,
     // Estilo del bordeado global (DaisyUI usa esto para botones, cards)
     radius: "1rem",
@@ -107,16 +107,16 @@ const config = {
   // -----------------------------------------------------------
   landing: {
     nav: [
-      { label: "Características", href: "#features" },
-      { label: "Precios", href: "#pricing" },
+      { label: "Lo más vendido", href: "#features" },
+      { label: "Productos", href: "#pricing" },
       { label: "Preguntas", href: "#faq" },
       { label: "Docs", href: "/docs" },
     ],
     hero: {
-      eyebrow: "Boilerplate con IA · Chihuahua",
-      title: "Crea tu producto web con IA y quédate al día.",
+      eyebrow: "BetterwareChihMx",
+      title: "Todo para tu hogar, al mejor precio",
       subtitle:
-        "La base para estudiantes y profesionistas de Chihuahua que quieren lanzar páginas reales sin quedarse atrás en tecnología.",
+        "Comienza tu propio negocio y GANA dinero hoy mismo con Betterware",
       cta: { label: "Empieza ahora", href: "#waitlist" },
       ctaSecondary: { label: "Ver docs", href: "/docs" },
     },
