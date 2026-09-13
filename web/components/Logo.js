@@ -1,6 +1,20 @@
-// Marca de Vibecoding: una "V" con forma de símbolo de raíz cuadrada (√).
-// Cuadrado redondeado con el color primary y el trazo en blanco.
+import config from "@/config"
+
+// Si `config.brand.logoSrc` tiene ruta (ej. /logo.png), muestra tu imagen.
+// Si no, el recuadro con palomita de la plantilla.
 export default function Logo({ className = "size-7" }) {
+  if (config.brand.logoSrc) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={config.brand.logoSrc}
+        alt=""
+        className={`inline-block rounded-lg object-contain ${className}`}
+        aria-hidden
+      />
+    )
+  }
+
   return (
     <span
       className={`inline-flex items-center justify-center rounded-lg bg-primary text-primary-content ${className}`}

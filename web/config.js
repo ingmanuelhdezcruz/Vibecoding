@@ -25,7 +25,7 @@ const config = {
     name: "Betterware Chihuahua",
     description:
       "Mi casa con Betterware",
-    domain: "betterware.chih.mx", // sin https://, sin www
+    domain: "betterwarechih.mx", // sin https://, sin www
     locale: "es", // "es" | "en"
     // URL pública: usa NEXT_PUBLIC_APP_URL en .env. En este config solo definimos el default.
     defaultUrl: "http://localhost:3000",
@@ -39,7 +39,7 @@ const config = {
     primary: "#00AEC7", // indigo-600: tech, IA y confianza profesional
     // Logo: puede ser texto o ruta a /public/logo.svg
     logoText: "Betterware Chihuahua",
-    logoSrc: null,
+    logoSrc: "/logo.svg",
     // Estilo del bordeado global (DaisyUI usa esto para botones, cards)
     radius: "1rem",
   },
