@@ -1,15 +1,15 @@
 import config from "@/config"
 
-// Si `config.brand.logoSrc` tiene ruta (ej. /logo.png), muestra tu imagen.
+// Si `config.brand.logoSrc` tiene ruta (ej. /Logo.png), muestra tu imagen.
 // Si no, el recuadro con palomita de la plantilla.
-export default function Logo({ className = "size-7" }) {
+export default function Logo({ className = "size-10" }) {
   if (config.brand.logoSrc) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={config.brand.logoSrc}
         alt=""
-        className={`inline-block rounded-lg object-contain ${className}`}
+        className={`inline-block shrink-0 rounded-full object-cover ${className}`}
         aria-hidden
       />
     )

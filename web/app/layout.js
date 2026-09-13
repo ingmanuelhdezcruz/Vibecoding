@@ -33,7 +33,7 @@ export const metadata = {
     locale: config.app.locale === "es" ? "es_MX" : "en_US",
   },
   twitter: { card: "summary_large_image" },
-  icons: { icon: "/logo.svg" },
+  icons: { icon: "/Logo.png" },
 }
 
 export const viewport = {

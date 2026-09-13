@@ -24,8 +24,8 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.5fr_repeat(3,1fr)]">
           <div>
             <div className="flex items-center gap-2">
-              <Logo className="size-6" />
-              <span className="text-lg font-bold">{config.brand.logoText}</span>
+              <Logo className="size-10" />
+              <span className="text-lg font-bold text-primary">{config.brand.logoText}</span>
             </div>
             <p className="mt-3 max-w-xs text-sm text-base-content/60">{tagline}</p>
           </div>

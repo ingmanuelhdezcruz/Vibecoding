@@ -25,8 +25,8 @@ export default function Navbar() {
             </ul>
           </div>
 
-          <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
-            <Logo className="size-7" />
+          <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight text-primary">
+            <Logo className="size-10" />
             {config.brand.logoText}
           </Link>
         </div>

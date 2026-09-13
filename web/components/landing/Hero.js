@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowRight, Sparkles, LayoutDashboard, MessageSquare, Bot } from "lucide-react"
 import config from "@/config"
+import Logo from "@/components/Logo"
 
 const MOCK_NAV = [
   { label: "Dashboard", icon: LayoutDashboard, active: true },
@@ -65,18 +66,8 @@ export default function Hero() {
             {/* Sidebar */}
             <aside className="hidden rounded-xl bg-base-100 p-3 sm:block">
               <div className="mb-3 flex items-center gap-2 px-1">
-                <span className="inline-flex size-6 items-center justify-center rounded-md bg-primary text-primary-content">
-                  <svg viewBox="0 0 24 24" fill="none" className="size-[62%]">
-                    <path
-                      d="M3.5 12 H7 L10.5 18 L15.5 6 H20.5"
-                      stroke="currentColor"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-                <span className="text-sm font-bold">{config.brand.logoText}</span>
+                <Logo className="size-8" />
+                <span className="text-sm font-bold text-primary">{config.brand.logoText}</span>
               </div>
               <ul className="space-y-1">
                 {MOCK_NAV.map(({ label, icon: Icon, active }) => (
